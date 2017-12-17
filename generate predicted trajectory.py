@@ -71,6 +71,21 @@ def search_frameID(data, pedestrian_index, test_gt):
         if (data[i][0][-2] == query[-2]) and (data[i][0][-1] == query[-1]):
             return data[i][0][1]
     
+def smallest_error(pred_output, input_gt):
+    
+    err_list = []
+    for ped_index in range(len(pred_output)):
+        err = 0.0
+        for i in range(len(pred_output[ped_index])):
+            err += distance.euclidean(pred_output[ped_index][i], input_gt[ped_index][i])
+        
+        err_list.append(err)
+    
+    err_vals = np.array(err_list)
+    sort_index = np.argsort(err_vals)
+    
+    return sort_index
+err_index = smallest_error(pred_output, test_gt)
 
 
 pedestrian_index = 36
