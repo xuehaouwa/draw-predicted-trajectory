@@ -14,7 +14,8 @@ training_frame_num = 20
 predicting_frame_num = 20
 batch_size = 25
 
-
+# load all data
+data = np.load('pred_data.npy')
 
 
 # load pretrained models
@@ -62,6 +63,17 @@ def pred_with_possibility(y_class_out, pedestrian_index, test_input, test_gt):
     
     return test_input[pedestrian_index], class_possibility, test_gt[pedestrian_index], predicted_output
 
+def search_frameID(data, pedestrian_index, test_gt):
+
+    query = test_gt[pedestrian_index][0]
+    
+    for i in range(len(data)):
+        if (data[i][0][-2] == query[-2]) and (data[i][0][-1] == query[-1]):
+            return data[i][0][1]
+    
 
 
-input_possibility, class_possibility, label_possibility, predicted_possibility = pred_with_possibility(y_class_output, 165, test_input, test_gt)
+pedestrian_index = 36
+input_possibility, class_possibility, label_possibility, predicted_possibility = pred_with_possibility(y_class_output, pedestrian_index, test_input, test_gt)
+frame_ID = search_frameID(data, pedestrian_index, test_gt)
+print(frame_ID)
